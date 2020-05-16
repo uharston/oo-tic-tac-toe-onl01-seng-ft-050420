@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 require 'pry'
+=======
+>>>>>>> 574945c31b2a7beab8eeed39a9f51458487c792f
 class TicTacToe
 
   WIN_COMBINATIONS = [
@@ -27,16 +30,27 @@ end
   def input_to_index(input)
     input.to_i - 1
   end
+<<<<<<< HEAD
 
   def move(board_index, token)
+=======
+  #adds the tokens to the board. X is always first
+  def move(board_index, token="X")
+>>>>>>> 574945c31b2a7beab8eeed39a9f51458487c792f
     @board[board_index] = token
   end
 
   def position_taken?(index)
+<<<<<<< HEAD
+=======
+    #Ex. @board[3][0] => "X" - true
+    #Ex. @board[2][0] => " " - false
+>>>>>>> 574945c31b2a7beab8eeed39a9f51458487c792f
     @board[index].include?(" ") ? false : true
   end
 
   def valid_move?(index)  #valid_move(0) => false
+<<<<<<< HEAD
     index.between?(0,8) && !position_taken?(index)
   end
 
@@ -161,3 +175,36 @@ end
   #  end
 
 end
+=======
+    !(index > 8 || @board[index].include?("X" || "O")) ?  true  : false
+  end
+  #it determines whose turn it is based off the number of X's and O's.
+  def turn_count
+    #both ways work
+    # @board.count("X") + @board.count("O")
+    @board.count {|i| ["X", "O"].include? i}
+  end
+
+  def turn
+    puts current_player
+    input = gets.chomp #=> 3
+    index = input_to_index(input) #=> index = 2
+    if (valid_move?(index) == true)
+      move(index)
+      display_board
+    else
+      input = gets.chomp
+    end
+  end
+  #Tell us the current play according to #turn_count
+  def current_player
+    #Both work
+    turn_count % 2 == 0 ? "X" : "O"
+  end
+end
+
+
+
+# rspec spec/01_tic_tac_toe_spec.rb
+# rspec spec/01_tic_tac_toe_spec.rb
+>>>>>>> 574945c31b2a7beab8eeed39a9f51458487c792f
