@@ -1,5 +1,4 @@
 require 'pry'
-
 class TicTacToe
 
   WIN_COMBINATIONS = [
@@ -28,27 +27,20 @@ end
   def input_to_index(input)
     input.to_i - 1
   end
-  #adds the tokens to the board. X is always first
+
   def move(board_index, token)
     @board[board_index] = token
   end
 
   def position_taken?(index)
-    #Ex. @board[3][0] => "X" - true
-    #Ex. @board[2][0] => " " - false
     @board[index].include?(" ") ? false : true
   end
-  #check if index is between 0 and 8? Range? 3.between?(1, 5) => true
-  #check if the index is on the board => position_taken?(index)
 
   def valid_move?(index)  #valid_move(0) => false
     index.between?(0,8) && !position_taken?(index)
-    #!(index > 8 || @board[index].include?("X" || "O")) ?  true  : false
   end
-  #it determines whose turn it is based off the number of X's and O's.
+
   def turn_count
-    #both ways work
-    # @board.count("X") + @board.count("O")
     @board.count {|i| ["X", "O"].include? i}
   end
 
@@ -76,22 +68,17 @@ def turn
     move(index, current_player)
 
   else
-    turn
+      input = gets.chomp
   end
   display_board
 end
-  #Tell us the current play according to #turn_count
-  def current_player
 
+  def current_player
     turn_count % 2 == 0 ? "X" : "O"
   end
-  #how do we return true if someone has a winning combination?
-  #how do i check if X indexes in @board match any of the array in
-  #WIN_COMBINATIONS?
-  #I need to iterate through WIN_COMBINATIONS
-  #i => sub array of WIN_COMBINATIONS
+
   def won?
-    win_array = []
+    # win_array = []
     WIN_COMBINATIONS.each do|sub_array|
       winner_1 = sub_array[0]
       winner_2 = sub_array[1]
@@ -102,21 +89,75 @@ end
       won_3 = @board[winner_3]
 
       if won_1 == "X" && won_2 == "X" && won_3 == "X"
-       sub_array
-binding.pry
+        return sub_array
+
       elsif won_1 == "O" && won_2 == "O" && won_3 == "O"
-         sub_array
-
-
-      end
-
-    end
+         return sub_array
+       end
+     end
 false
-  end
-
 end
 
+  def full?
+  if @board.include?(" ")
 
+    return false
+   else
+     return true
+   end
+  end
 
-# rspec spec/01_tic_tac_toe_spec.rb
-# rspec spec/01_tic_tac_toe_spec.rb
+  def draw?
+    if full?
+
+      won?.class == Array ? false : true
+
+    else
+      return false
+    end
+  end
+  #check if the game is won? or is full? and returns true
+  def over?
+   draw? || won? ? true : false
+  end
+  #return 'X' if X won, 'O' if O won, 'nil' if it was a draw
+  #check won? result.
+  #if won? includes
+  def winner
+    WIN_COMBINATIONS.each do|sub_array|
+      winner_1 = sub_array[0]
+      winner_2 = sub_array[1]
+      winner_3 = sub_array[2]
+
+      won_1 = @board[winner_1]
+      won_2 = @board[winner_2]
+      won_3 = @board[winner_3]
+
+      if won_1 == "X" && won_2 == "X" && won_3 == "X"
+        return "X"
+
+      elsif won_1 == "O" && won_2 == "O" && won_3 == "O"
+         return "O"
+       end
+     end
+     nil
+   end
+
+  def play
+
+    until over?
+       turn
+     end
+     if won?
+      puts "Congratulations #{winner}!"
+     elsif draw?
+       puts "Cat's Game!"
+     end
+   end
+   #
+  #  if over?
+  #    binding.pry
+  #    puts "over yo"
+  #  end
+
+end
